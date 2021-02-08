@@ -1,43 +1,49 @@
-def main():
-    bigBoxH=float(input("Enter big box height in inches: "))
-    smallBoxH=float(input("Enter small box height in inches: "))
-    bookH=float(input("Enter book height in inches: "))
-    noOfBooks=float(input("Enter number of books: "))
-    temp1=bigBoxH//bookH
-    noOfBigBox=noOfBooks//temp1
-    temp2=smallBoxH//bookH
-    noOfSmallBox=noOfBooks//temp1
-    if noOfBigBox==0 and noOfSmallBox==0:
-        print("Ship 1 small box or ship 1 big box ")
-        return
-    remBooks=noOfBooks%temp1
-    noOfSmallBox=(remBooks//temp2)
-    if (remBooks%smallBoxH)<0:
-        noOfSmallBox+=1
-    res="Ship "+str(int(noOfBigBox))+" big box \nShip "+str(int(noOfSmallBox))+" small box"
-    print(res)
-if __name__=="__main__":
-    main()
+def shipping_boxes():
+    big_box = float(input("Enter the height of the big box in inches: "))
+    small_box = float(input("Enter the height of the small box in inches: "))
+    book_thickness = float(input("Enter the thickness of 1 book in inches: "))
+    no_of_books = int(input("Enter the no of books to be shipped: "))
+    # get the height of the books in total
+    height_of_books = book_thickness*no_of_books
+    # check how many big boxes are required first
+    if height_of_books > big_box:
+        # get the number of big boxes first
+        no_of_big_boxes = height_of_books//big_box
+        remaining_books = height_of_books % big_box
+        # check if remaining books is greater than the small box to know how many small boxes will be required
+        if remaining_books > small_box:
+            if remaining_books % small_box > 0:
+                no_of_small_boxes = (remaining_books//small_box) + 1
+                print("Ship {} large boxes and {} small boxes".format(
+                    no_of_big_boxes, no_of_small_boxes))
+            else:
+                no_of_small_boxes = remaining_books//small_box
+                print("Ship {} large boxes and {} small boxes".format(
+                    no_of_big_boxes, no_of_small_boxes))
+        # check if there are no remaining books to ship only big boxes
+        elif remaining_books == 0:
+            print("Ship {} large boxes".format(no_of_big_boxes))
+        #i f remaining books is not greater than the size of small box place the remaining books into one small box
+        else:
+            no_of_small_boxes = 1
+            print("Ship {} large boxes and {} small box".format(
+                no_of_big_boxes, no_of_small_boxes))
+    # check if the books height is equal to the height of one big box to return one big box
+    elif height_of_books == big_box:
+        no_of_big_boxes =1
+        print("Ship {} big box or Ship {} big box".format(no_of_big_boxes, no_of_big_boxes))
+    # check if height of books is greater than the small box size and if there is a remainder in the books to fill the small boxes
+    elif height_of_books > small_box and height_of_books % small_box > 0:
+        no_of_small_boxes = (height_of_books//small_box) + 1
+        print("ship {} small boxes".format(no_of_small_boxes))
+    # check if the height of books is greater than the small box but no remaining books
+    elif height_of_books > small_box and height_of_books % small_box == 0:
+        no_of_small_boxes = height_of_books/small_box
+        print("ship {} small boxes".format(no_of_small_boxes))
+    # check if the height of books is less than a small box to ship them in one small box
+    elif height_of_books <= small_box:
+        print("Ship 1 small box or ship 1 big box")
 
-    
-PSEUDOCODE
 
-    """
-program start 
-    bigBoxH = input prompt user convert the users input to float
-    smallBoxH = input prompt user convert the users input to float
-    bookH = input prompt user convert the users input to float
-    noOfbooks = input prompt users input 
-    temp1 = bigBoxH // bookH  Calculate the no of books that can fit each big box
-    noOfBigBox = noOfBooks // Calculate get total number of big boxes with books
-    temp2 = smallBoxH // bookH  Calculate the remaining number of books that can fit small box
-    noOfSmallBox = noOfBooks // temp1 Calculate number of small box
-    if noOfBigBox is 0 and noOfSmallBox is 0
-    print ship 1 small or ship 1 bib box
-    return
-    remBooks = noOfBooks % temp1 calculate remaining books
-    noOfSmallBox = (remBooks // temp2) Calculate number of small box
-    if (remBooks%smallBoxH) less than 0
-    Incerement the noOfSmallBox by 1
-    print ship small box number or ship big box number
-    """
+if __name__ == '__main__':
+    shipping_boxes()
